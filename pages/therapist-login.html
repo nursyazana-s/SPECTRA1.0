@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SPECTRA — OT Portal Login</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<div class="sticky-banner">⚠️ Clinician review mandatory | HTPN &nbsp;|&nbsp; Therapist Portal — Restricted Access</div>
+<div id="disclaimerOverlay" class="disclaimer-overlay">
+  <div class="disclaimer-box">
+    <div class="disclaimer-logo-row"><div class="disclaimer-icon">🧠</div><div><h1 class="disclaimer-title">SPECTRA</h1><p class="disclaimer-subtitle">Occupational Therapist Portal</p></div></div>
+    <p class="disclaimer-credit">Occupational Therapist HTPN Team &amp; Healthcare Intelligence Office HTPN</p>
+    <div class="disclaimer-divider"></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">⚠ HITL</span><p>All AI outputs must be reviewed by a qualified clinician. <strong>HITL verification is mandatory.</strong></p></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">🔒 Privacy</span><p>Do not share login credentials. Handle patient data per PDPA guidelines.</p></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">⚕ Clinical</span><p>This tool does not constitute medical advice. Clinical responsibility remains with the treating clinician.</p></div>
+    <div class="disclaimer-brand">Healthcare Intelligence Office HTPN</div>
+    <p class="disclaimer-ack">By clicking below you acknowledge these terms.</p>
+    <button class="disclaimer-btn" onclick="closeDisclaimer()">I Understand — Enter Clinical Document Checker</button>
+  </div>
+</div>
+
+<div class="login-wrapper" style="padding-top:44px">
+  <div class="login-card">
+    <!-- OT BADGE ROW -->
+    <div class="login-ot-row">
+      <div class="ot-badge" style="width:52px;height:52px;font-size:1.05rem">OT</div>
+      <div class="login-ot-text">
+        <div class="login-ot-label">Occupational Therapist</div>
+        <div class="login-ot-sub">Clinical Portal Access — HTPN</div>
+      </div>
+    </div>
+
+    <div class="login-logo">
+      <!-- FIXED: Using text emoji that renders correctly in all browsers -->
+      <div style="font-size:4rem;line-height:1;margin-bottom:10px;text-align:center">🩺</div>
+      <div class="login-logo-title">SPECTRA</div>
+      <p class="login-logo-sub">Occupational Therapist Portal</p>
+      <p class="login-logo-sub" style="margin-top:4px;font-size:.72rem;color:var(--danger);font-weight:700">🔒 Restricted — Authorised Personnel Only</p>
+    </div>
+
+    <div class="login-form-group">
+      <label class="login-label">Username</label>
+      <input class="login-input" id="uname" type="text" placeholder="Enter your OT username" autocomplete="username"/>
+    </div>
+    <div class="login-form-group">
+      <label class="login-label">Password</label>
+      <input class="login-input" id="upass" type="password" placeholder="Enter your password"
+        onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="login-btn" onclick="doLogin()">
+      <span>🔐</span> Login to OT Portal
+    </button>
+    <div class="login-error" id="loginErr">❌ Invalid username or password. Please try again.</div>
+
+    <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);text-align:center">
+      <p style="font-size:.75rem;color:var(--text-light);margin-bottom:6px">Default demo credentials:</p>
+      <p style="font-size:.74rem;color:var(--text-light)">Admin: <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:.78rem">admin</code> / <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:.78rem">htpn2024</code></p>
+      <p style="font-size:.74rem;color:var(--text-light);margin-top:3px">OT: <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:.78rem">ot.farah</code> / <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:.78rem">spectra123</code></p>
+    </div>
+    <div style="margin-top:16px;text-align:center">
+      <a href="../index.html" style="font-size:.8rem;color:var(--text-light);text-decoration:none">← Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<script src="../js/spectra.js"></script>
+<script>
+function doLogin(){
+  const u=document.getElementById('uname').value.trim();
+  const p=document.getElementById('upass').value;
+  if(!u||!p){document.getElementById('loginErr').style.display='block';return;}
+  const user=login(u,p);
+  if(user){window.location.href='therapist-dashboard.html';}
+  else{document.getElementById('loginErr').style.display='block';}
+}
+</script>
+</body>
+</html>

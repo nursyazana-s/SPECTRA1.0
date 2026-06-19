@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SPECTRA — Parent Questionnaire</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .demo-hero{background:linear-gradient(135deg,#EEF2FF,#F3E8FF);border-radius:20px;padding:28px;text-align:center;margin-bottom:28px;border:1.5px solid #C7D2FE}
+    .demo-hero-icon{font-size:3.5rem;margin-bottom:10px;line-height:1}
+    .demo-hero h2{font-family:var(--font-display);font-size:1.3rem;font-weight:700;margin-bottom:6px}
+    .demo-hero p{font-size:.84rem;color:var(--text-light)}
+    .instr-card{background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1.5px solid #FCD34D;border-radius:16px;padding:22px;margin-bottom:20px}
+    .instr-card h3{font-family:var(--font-display);font-size:1rem;font-weight:700;color:#92400E;margin-bottom:10px}
+    .instr-card p{font-size:.84rem;color:#78350F;line-height:1.6}
+  </style>
+</head>
+<body>
+<div class="sticky-banner">⚠️ Clinician review mandatory | HTPN &nbsp;|&nbsp; AI outputs require qualified OT sign-off before use</div>
+
+<div id="disclaimerOverlay" class="disclaimer-overlay">
+  <div class="disclaimer-box">
+    <div class="disclaimer-logo-row"><div class="disclaimer-icon">🧠</div><div><h1 class="disclaimer-title">SPECTRA</h1><p class="disclaimer-subtitle">Sensory Profile Evaluation &amp; Therapy Assistant</p></div></div>
+    <p class="disclaimer-credit">Occupational Therapist HTPN Team &amp; Healthcare Intelligence Office HTPN</p>
+    <div class="disclaimer-divider"></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">⚠ HITL</span><p>All outputs must be reviewed by a qualified clinician.</p></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">🔒 Privacy</span><p>Do not enter full IC. Responses used for clinical purposes only.</p></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">⚕ Clinical</span><p>This tool does not constitute medical advice.</p></div>
+    <div class="disclaimer-brand">Healthcare Intelligence Office HTPN</div>
+    <p class="disclaimer-ack">By clicking below you acknowledge these terms.</p>
+    <button class="disclaimer-btn" onclick="closeDisclaimer()">I Understand — Enter Clinical Document Checker</button>
+  </div>
+</div>
+
+<div class="page-header">
+  <a href="../index.html" class="page-header-back">← Back</a>
+  <div>
+    <div class="page-header-title">🧠 SPECTRA — Caregiver Questionnaire</div>
+    <div class="page-header-sub">Child Sensory Profile 2 (SP-2) | Age 3:0 – 14:11 | Winnie Dunn PhD OTR FAOTA</div>
+  </div>
+</div>
+
+<div class="progress-wrapper">
+  <div class="progress-info">
+    <span class="progress-label" id="progressLabel">Step 1 of 12 — Language Selection</span>
+    <span class="progress-pct" id="progressPct">0%</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="form-wrapper">
+  <div class="page-indicator" id="pageIndicator"></div>
+
+  <!-- PAGE 0: LANGUAGE with FLAG EMOJIS -->
+  <div class="section-page active" id="page-0">
+    <div class="lang-banner">
+      <div class="lang-banner-icon">🌐</div>
+      <h3>Choose Your Language / Pilih Bahasa Anda</h3>
+      <p>Please select the language for the questionnaire<br>Sila pilih bahasa untuk soal selidik ini</p>
+    </div>
+    <div class="flag-cards">
+      <div class="flag-card en-card" onclick="setLang('en')">
+        <div class="flag-emoji">🇺🇸</div>
+        <h3 class="flag-card-title">English</h3>
+        <p class="flag-card-desc">Complete the questionnaire in English</p>
+        <button class="flag-btn flag-btn-en" type="button">Select English</button>
+      </div>
+      <div class="flag-card bm-card" onclick="setLang('bm')">
+        <div class="flag-emoji">🇲🇾</div>
+        <h3 class="flag-card-title">Bahasa Melayu</h3>
+        <p class="flag-card-desc">Lengkapkan soal selidik dalam Bahasa Melayu</p>
+        <button class="flag-btn flag-btn-bm" type="button">Pilih Bahasa Melayu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 1: DEMOGRAPHICS -->
+  <div class="section-page" id="page-1">
+    <div class="demo-hero">
+      <div class="demo-hero-icon">👶</div>
+      <h2 id="demoTitle">Child & Parent Information</h2>
+      <p id="demoSub">Please fill in all required fields accurately.</p>
+    </div>
+    <div class="form-card">
+      <div class="form-section-title">📋 <span id="demoFormTitle">Child's Details</span> <span class="form-section-badge">Section 1 of 12</span></div>
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label class="form-label" id="lbl-childname">Child's Full Name <span class="form-required">*</span></label>
+          <input class="form-input" id="fChildName" type="text" placeholder="e.g. Ahmad Fikri bin Abdullah" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="lbl-phone">Parent's Phone Number <span class="form-required">*</span></label>
+          <input class="form-input" id="fPhone" type="tel" placeholder="01X-XXXXXXXX" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="lbl-ic">IC Last 6 Digits <span class="form-required">*</span></label>
+          <input class="form-input" id="fIC" type="text" maxlength="6" placeholder="e.g. 123456" pattern="[0-9]{6}" required/>
+          <small style="font-size:.72rem;color:var(--text-light)" id="ic-hint">Last 6 digits of Malaysian IC number only</small>
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="lbl-age">Child's Age (years) <span class="form-required">*</span></label>
+          <input class="form-input" id="fAge" type="number" min="3" max="14" placeholder="3 – 14" required/>
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="lbl-gender">Gender <span class="form-required">*</span></label>
+          <select class="form-select" id="fGender" required>
+            <option value="">-- Select / Pilih --</option>
+            <option value="Male">Male / Lelaki</option>
+            <option value="Female">Female / Perempuan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="lbl-bday">Child's Birthday <span class="form-required">*</span></label>
+          <input class="form-input" id="fBirthday" type="date" required/>
+        </div>
+        <div class="form-group full-width">
+          <label class="form-label" id="lbl-email">Parent's Email Address <span class="form-required">*</span></label>
+          <input class="form-input" id="fEmail" type="email" placeholder="parent@example.com" required/>
+          <small style="font-size:.72rem;color:#059669;font-weight:600" id="email-hint">📧 Required — approved results will be emailed to this address by your OT</small>
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="lbl-rel">Relationship to Child <span class="form-required">*</span></label>
+          <select class="form-select" id="fRelationship" required>
+            <option value="">-- Select / Pilih --</option>
+            <option value="Mother">Mother / Ibu</option>
+            <option value="Father">Father / Bapa</option>
+            <option value="Grandparent">Grandparent / Datuk/Nenek</option>
+            <option value="Guardian">Guardian / Penjaga</option>
+            <option value="Other">Other / Lain-lain</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="lbl-school">School / Daycare (Optional)</label>
+          <input class="form-input" id="fSchool" type="text" placeholder="Name of school/daycare"/>
+        </div>
+      </div>
+      <div class="unanswered-warning" id="demoWarn">⚠️ Please fill in all required fields before continuing.</div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" onclick="goPage(0)">← Back</button>
+      <button class="btn btn-primary" onclick="validateDemo()">Next: Instructions →</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2: INSTRUCTIONS -->
+  <div class="section-page" id="page-2">
+    <div class="demo-hero">
+      <div class="demo-hero-icon">📋</div>
+      <h2 id="instrTitle">How to Answer the Questionnaire</h2>
+      <p id="instrSub">Please read the instructions carefully before starting</p>
+    </div>
+    <div class="form-card">
+      <div class="instr-card">
+        <h3 id="instrCardTitle">📌 Instructions</h3>
+        <p id="instrText">The pages that follow contain statements that describe how children may act. Please read each phrase and <strong>select the option that best describes how often your child shows these behaviours.</strong> Please mark one option for every statement.</p>
+      </div>
+      <div class="form-section-title" id="scaleTitle">📊 Rating Scale — When presented with the opportunity, my child...</div>
+      <div class="scale-legend">
+        <div class="scale-legend-item"><div class="scale-legend-num" style="color:#DC2626">5</div><div class="scale-legend-label" id="s5">Almost Always (90%+)</div></div>
+        <div class="scale-legend-item"><div class="scale-legend-num" style="color:#EA580C">4</div><div class="scale-legend-label" id="s4">Frequently (75%)</div></div>
+        <div class="scale-legend-item"><div class="scale-legend-num" style="color:#D97706">3</div><div class="scale-legend-label" id="s3">Half the Time (50%)</div></div>
+        <div class="scale-legend-item"><div class="scale-legend-num" style="color:#65A30D">2</div><div class="scale-legend-label" id="s2">Occasionally (25%)</div></div>
+        <div class="scale-legend-item"><div class="scale-legend-num" style="color:#059669">1</div><div class="scale-legend-label" id="s1">Almost Never (10%)</div></div>
+        <div class="scale-legend-item"><div class="scale-legend-num" style="color:#64748B">0</div><div class="scale-legend-label" id="s0">Does Not Apply</div></div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" onclick="goPage(1)">← Back</button>
+      <button class="btn btn-primary" onclick="goPage(3)">Start Questions →</button>
+    </div>
+  </div>
+
+  <!-- QUESTION PAGES 3-11 (built by JS) -->
+  <div id="qPages"></div>
+
+  <!-- SUBMIT PAGE -->
+  <div class="section-page" id="page-submit">
+    <div class="submit-section">
+      <span class="submit-icon">🎉</span>
+      <div class="submit-title" id="submitTitle">All Sections Completed!</div>
+      <div class="submit-desc" id="submitDesc">You have completed all 9 sections of the Child Sensory Profile 2. Click the button below to calculate scores and generate your child's personalised home programme.</div>
+      <div id="submitSummary" style="background:#fff;border-radius:14px;padding:22px;margin:20px 0;text-align:left;border:1px solid var(--border)"></div>
+      <button class="btn btn-success" style="font-size:1rem;padding:15px 40px" onclick="submitForm()">📊 Calculate Scores & Submit</button>
+    </div>
+  </div>
+</div>
+
+<div id="globalToast" class="toast"></div>
+<script src="../js/spectra.js"></script>
+<script>
+let curPage=0, lang='en', answers={};
+const SECTIONS=['auditory','visual','touch','movement','bodyPosition','oral','conduct','socialEmotional','attentional'];
+const TOTAL=12;
+
+window.addEventListener('load',()=>{ buildQPages(); updateProgress(); });
+
+function setLang(l){
+  lang=l; applyLang(); goPage(1);
+}
+
+function applyLang(){
+  if(lang==='bm'){
+    document.getElementById('demoTitle').textContent='Maklumat Kanak-kanak & Ibu Bapa';
+    document.getElementById('demoSub').textContent='Sila isi semua maklumat yang diperlukan dengan tepat.';
+    document.getElementById('demoFormTitle').textContent='Maklumat Kanak-kanak';
+    document.getElementById('lbl-childname').innerHTML='Nama Penuh Kanak-kanak <span class="form-required">*</span>';
+    document.getElementById('lbl-phone').innerHTML='No. Telefon Ibu Bapa <span class="form-required">*</span>';
+    document.getElementById('lbl-ic').innerHTML='6 Digit Akhir IC <span class="form-required">*</span>';
+    document.getElementById('ic-hint').textContent='6 digit terakhir IC Malaysia sahaja';
+    document.getElementById('lbl-age').innerHTML='Umur Kanak-kanak (tahun) <span class="form-required">*</span>';
+    document.getElementById('lbl-gender').innerHTML='Jantina <span class="form-required">*</span>';
+    document.getElementById('lbl-bday').innerHTML='Tarikh Lahir <span class="form-required">*</span>';
+    document.getElementById('lbl-email').innerHTML='E-mel Ibu Bapa <span class="form-required">*</span>';
+    document.getElementById('email-hint').textContent='📧 Wajib — keputusan yang diluluskan akan diemailkan ke alamat ini';
+    document.getElementById('lbl-rel').innerHTML='Hubungan dengan Kanak-kanak <span class="form-required">*</span>';
+    document.getElementById('instrTitle').textContent='Cara Menjawab Soal Selidik';
+    document.getElementById('instrSub').textContent='Sila baca arahan dengan teliti sebelum memulakan';
+    document.getElementById('instrCardTitle').textContent='📌 Arahan';
+    document.getElementById('instrText').innerHTML='Sila baca setiap frasa dan <strong>pilih pilihan yang paling tepat menggambarkan kerap kali anak anda menunjukkan tingkah laku ini.</strong>';
+    document.getElementById('scaleTitle').textContent='📊 Skala Penilaian — Apabila diberikan peluang, anak saya...';
+    document.getElementById('s5').textContent='Hampir Selalu (90%+)';
+    document.getElementById('s4').textContent='Kerap (75%)';
+    document.getElementById('s3').textContent='Separuh Masa (50%)';
+    document.getElementById('s2').textContent='Kadang-kadang (25%)';
+    document.getElementById('s1').textContent='Hampir Tidak Pernah (10%)';
+    document.getElementById('s0').textContent='Tidak Berkaitan';
+    document.getElementById('submitTitle').textContent='Semua Bahagian Selesai! 🎉';
+    document.getElementById('submitDesc').textContent='Anda telah melengkapkan semua 9 bahagian. Klik butang di bawah untuk mengira skor.';
+  }
+  document.querySelectorAll('.q-en').forEach(el=>el.style.display=lang==='en'?'':'none');
+  document.querySelectorAll('.q-bm').forEach(el=>el.style.display=lang==='bm'?'':'none');
+  document.querySelectorAll('.rl-en').forEach(el=>el.style.display=lang==='en'?'':'none');
+  document.querySelectorAll('.rl-bm').forEach(el=>el.style.display=lang==='bm'?'':'none');
+  document.querySelectorAll('.qi-instr-en').forEach(el=>el.style.display=lang==='en'?'':'none');
+  document.querySelectorAll('.qi-instr-bm').forEach(el=>el.style.display=lang==='bm'?'':'none');
+  document.querySelectorAll('.sec-desc-en').forEach(el=>el.style.display=lang==='en'?'':'none');
+  document.querySelectorAll('.sec-desc-bm').forEach(el=>el.style.display=lang==='bm'?'':'none');
+}
+
+function buildQPages(){
+  const container=document.getElementById('qPages');
+  container.innerHTML='';
+  SECTIONS.forEach((key,idx)=>{
+    const sec=SP2_QUESTIONS[key];
+    const pageNum=idx+3;
+    const isLast=idx===SECTIONS.length-1;
+    const page=document.createElement('div');
+    page.className='section-page';
+    page.id=`page-${pageNum}`;
+
+    const qHTML=sec.items.map(item=>{
+      const qBadge=item.q?`<span class="q-quadrant-badge ${item.q}">${item.q}</span>`:'';
+      const opts=[
+        {v:5,en:'Almost Always',bm:'Hampir Selalu'},
+        {v:4,en:'Frequently',bm:'Kerap'},
+        {v:3,en:'Half the Time',bm:'Separuh Masa'},
+        {v:2,en:'Occasionally',bm:'Kadang-kadang'},
+        {v:1,en:'Almost Never',bm:'Hampir Tidak Pernah'},
+        {v:0,en:"Doesn't Apply",bm:'Tidak Berkaitan'}
+      ];
+      return `<div class="question-item" id="qi-${item.num}">
+        <div class="question-num">Q${item.num} ${qBadge}</div>
+        <div class="question-text">
+          <span class="q-en">${item.en}</span>
+          <span class="q-bm" style="display:none">${item.bm}</span>
+        </div>
+        <div class="rating-row">
+          ${opts.map(o=>`<label class="rating-option">
+            <input type="radio" name="q${item.num}" value="${o.v}" onchange="recordAns(${item.num},${o.v})">
+            <div class="rating-label"><span class="rl-en">${o.en}</span><span class="rl-bm" style="display:none">${o.bm}</span></div>
+            <div class="rating-val">${o.v}</div>
+          </label>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+
+    page.innerHTML=`
+      <div class="q-section-header" style="background:${sec.gradient};border:1.5px solid ${sec.color}30">
+        <div class="q-section-icon">${sec.icon}</div>
+        <div class="q-section-info">
+          <h2>${sec.label}</h2>
+          <p class="sec-desc-en">${sec.desc.en}</p>
+          <p class="sec-desc-bm" style="display:none">${sec.desc.bm}</p>
+        </div>
+      </div>
+      <div class="form-card">
+        <div style="background:${sec.bg};border:1px solid ${sec.color}30;border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:.84rem;font-weight:600;color:${sec.color}">
+          <span class="qi-instr-en">When presented with the opportunity, <strong>my child...</strong> (Select one for each question)</span>
+          <span class="qi-instr-bm" style="display:none">Apabila diberikan peluang, <strong>anak saya...</strong> (Pilih satu bagi setiap soalan)</span>
+        </div>
+        ${qHTML}
+        <div class="unanswered-warning" id="warn-${pageNum}"></div>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goPage(${pageNum-1})">${idx===0?'← Back to Instructions':'← Previous Section'}</button>
+        ${isLast?`<button class="btn btn-success" onclick="goToSubmit()">Review & Submit ✓</button>`:`<button class="btn btn-primary" onclick="nextSection(${pageNum},'${key}')">Next Section →</button>`}
+      </div>`;
+    container.appendChild(page);
+  });
+}
+
+function recordAns(num,val){
+  answers[num]=val;
+  const qi=document.getElementById(`qi-${num}`);
+  if(qi){ qi.classList.add('answered'); qi.style.borderColor='#86EFAC'; qi.style.background='#F0FDF4'; }
+}
+
+function goPage(n){
+  document.querySelectorAll('.section-page').forEach(p=>p.classList.remove('active'));
+  const t=document.getElementById(`page-${n}`);
+  if(t){t.classList.add('active');curPage=n;}
+  applyLang(); updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function validateDemo(){
+  const fields=['fChildName','fPhone','fIC','fAge','fGender','fEmail','fBirthday','fRelationship'];
+  const empty=fields.filter(f=>!document.getElementById(f).value.trim());
+  const w=document.getElementById('demoWarn');
+  if(empty.length){w.textContent='⚠️ Please fill in all required fields before continuing.';w.style.display='block';return;}
+  if(!/^\d{6}$/.test(document.getElementById('fIC').value)){w.textContent='⚠️ IC must be exactly 6 digits (numbers only).';w.style.display='block';return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('fEmail').value)){w.textContent='⚠️ Please enter a valid email address (e.g. parent@gmail.com).';w.style.display='block';return;}
+  w.style.display='none';
+  goPage(2);
+}
+
+function nextSection(pageNum,key){
+  const sec=SP2_QUESTIONS[key];
+  const missing=sec.items.filter(item=>answers[item.num]===undefined);
+  if(missing.length){
+    const w=document.getElementById(`warn-${pageNum}`);
+    w.style.display='block';
+    w.textContent=`⚠️ Please answer ${missing.length} remaining question(s) before proceeding.`;
+    missing.forEach(item=>{const el=document.getElementById(`qi-${item.num}`);if(el){el.style.borderColor='#FECACA';el.style.background='#FFF5F5';}});
+    return;
+  }
+  document.getElementById(`warn-${pageNum}`).style.display='none';
+  goPage(pageNum+1);
+}
+
+function goToSubmit(){
+  const lastKey=SECTIONS[SECTIONS.length-1];
+  const lastPage=SECTIONS.length-1+3;
+  const missing=SP2_QUESTIONS[lastKey].items.filter(item=>answers[item.num]===undefined);
+  if(missing.length){const w=document.getElementById(`warn-${lastPage}`);w.style.display='block';w.textContent=`⚠️ Please answer ${missing.length} remaining question(s).`;return;}
+  buildSubmitSummary();
+  document.querySelectorAll('.section-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-submit').classList.add('active');
+  curPage=TOTAL; updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildSubmitSummary(){
+  const totalQ=Object.values(SP2_QUESTIONS).reduce((t,s)=>t+s.items.length,0);
+  document.getElementById('submitSummary').innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;font-size:.88rem">
+      <div>👶 <strong>Child:</strong> ${document.getElementById('fChildName').value}</div>
+      <div>🎂 <strong>Age:</strong> ${document.getElementById('fAge').value} years</div>
+      <div>⚧ <strong>Gender:</strong> ${document.getElementById('fGender').value}</div>
+      <div>📝 <strong>Questions:</strong> ${Object.keys(answers).length} / ${totalQ} answered</div>
+      <div>📅 <strong>Date:</strong> ${new Date().toLocaleDateString('en-MY')}</div>
+      <div>🌐 <strong>Language:</strong> ${lang==='en'?'English':'Bahasa Melayu'}</div>
+    </div>`;
+}
+
+function submitForm(){
+  const sub={
+    id:'SP2-'+Date.now(),
+    submittedAt:new Date().toISOString(),
+    childName:document.getElementById('fChildName').value,
+    phone:document.getElementById('fPhone').value,
+    ic6:document.getElementById('fIC').value,
+    childAge:document.getElementById('fAge').value,
+    gender:document.getElementById('fGender').value,
+    email:document.getElementById('fEmail').value,
+    birthday:document.getElementById('fBirthday').value,
+    relationship:document.getElementById('fRelationship').value,
+    school:document.getElementById('fSchool').value,
+    language:lang,
+    answers:{...answers},
+    status:'pending'
+  };
+  const report=getFullReport(answers);
+  sub.report=report;
+  sub.clinicalSummary=genClinicalSummary(report,sub.childName);
+  sub.homeProgramme=genHomeProgramme(report);
+  sub.weeklySchedule=genWeeklySchedule(sub.homeProgramme);
+  saveSubmission(sub);
+  sessionStorage.setItem('spectra_latest',JSON.stringify(sub));
+  showToast('✅ Submitted! Your OT will review the results.','success');
+  setTimeout(()=>{window.location.href='parent-thankyou.html';},1200);
+}
+
+function updateProgress(){
+  const pct=Math.round((Math.min(curPage,TOTAL)/TOTAL)*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressPct').textContent=pct+'%';
+  const labels=['Language','Child Info','Instructions','Auditory','Visual','Touch','Movement','Body Position','Oral','Conduct','Social Emotional','Attentional','Submit'];
+  document.getElementById('progressLabel').textContent=`Step ${curPage+1} of ${TOTAL} — ${labels[curPage]||'Submit'}`;
+  const ind=document.getElementById('pageIndicator');
+  ind.innerHTML=Array.from({length:TOTAL},(_,i)=>`<div class="page-dot ${i===curPage?'active':i<curPage?'done':''}"></div>`).join('');
+}
+</script>
+</body>
+</html>

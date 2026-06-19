@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SPECTRA — Sensory Profile Evaluation & Clinical Therapy Remote Assistant</title>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<div class="sticky-banner">⚠️ Clinician review mandatory | HTPN &nbsp;|&nbsp; All AI outputs require qualified OT sign-off before clinical use</div>
+
+<div id="disclaimerOverlay" class="disclaimer-overlay">
+  <div class="disclaimer-box">
+    <div class="disclaimer-logo-row">
+      <div class="disclaimer-icon">🧠</div>
+      <div><h1 class="disclaimer-title">SPECTRA</h1><p class="disclaimer-subtitle">Sensory Profile Evaluation &amp; Therapy Assistant</p></div>
+    </div>
+    <p class="disclaimer-credit">Occupational Therapist HTPN Team &amp; Healthcare Intelligence Office HTPN</p>
+    <div class="disclaimer-divider"></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">⚠ HITL</span><p>All AI outputs must be reviewed and signed off by a qualified clinician. <strong>HITL verification is mandatory.</strong></p></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">🔒 Privacy</span><p>It is advisable <strong>not to enter patient-identifiable information</strong> (full name or IC number). Audio files are processed and deleted immediately after transcription.</p></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">⚕ Clinical</span><p>This tool <strong>does not constitute medical advice.</strong> Clinical responsibility remains with the treating clinician.</p></div>
+    <div class="disclaimer-brand">Healthcare Intelligence Office HTPN</div>
+    <p class="disclaimer-ack">By clicking below you acknowledge these terms.</p>
+    <button class="disclaimer-btn" onclick="closeDisclaimer()">I Understand — Enter Clinical Document Checker</button>
+  </div>
+</div>
+
+<div class="landing-wrapper">
+  <header class="landing-header">
+    <div class="header-brand">
+      <div class="brand-icon">🧠</div>
+      <div>
+        <h1 class="brand-name">SPECTRA</h1>
+        <p class="brand-tagline">Sensory Profile Evaluation &amp; Clinical Therapy Remote Assistant</p>
+      </div>
+    </div>
+    <div class="header-credit">
+      <div style="font-size:.68rem;opacity:.45;margin-bottom:3px">Powered by</div>
+      By Occupational Therapist HTPN Team &amp;<br>Healthcare Intelligence Office HTPN
+    </div>
+  </header>
+
+  <main class="landing-main">
+    <div class="landing-hero">
+      <h2 class="hero-title">Welcome to <span>SPECTRA</span> 👋</h2>
+      <p class="hero-sub">Please select your role to get started</p>
+      <p style="font-size:.78rem;color:var(--text-light);margin-top:6px">Unit Terapi Cara Kerja — Hospital Tengku Permaisuri Norashikin Kajang (HTPN)</p>
+    </div>
+
+    <div class="role-cards">
+      <!-- PARENT CARD -->
+      <div class="role-card parent-card" onclick="window.location.href='pages/parent-form.html'">
+        <div class="role-card-icon">👨‍👩‍👧</div>
+        <h3 class="role-card-title">Parent / Caregiver</h3>
+        <p class="role-card-desc">Complete the Child Sensory Profile 2 questionnaire for your child. Bilingual — choose English or Bahasa Melayu. Takes approximately 15–20 minutes.</p>
+        <div class="role-card-features">
+          <span class="feature-tag">📋 86 Questions</span>
+          <span class="feature-tag">🌐 BM / English</span>
+          <span class="feature-tag">📊 Auto Scoring</span>
+          <span class="feature-tag">⏱️ 15–20 min</span>
+        </div>
+        <button class="role-card-btn parent-btn">Start Questionnaire →</button>
+      </div>
+
+      <!-- OT CARD - FIXED ICON -->
+      <div class="role-card therapist-card" onclick="window.location.href='pages/therapist-login.html'">
+        <div class="role-card-icon">🩺</div>
+        <h3 class="role-card-title">Occupational Therapist</h3>
+        <p class="role-card-desc">Access the clinical portal to view patient SP-2 results, scores, clinical summaries, and evidence-based home programmes. Review and approve before sending to parents.</p>
+        <div class="role-card-features">
+          <span class="feature-tag">🔍 Search by IC</span>
+          <span class="feature-tag">📈 Score Reports</span>
+          <span class="feature-tag">✏️ Edit & Approve</span>
+          <span class="feature-tag">📧 Email to Parent</span>
+        </div>
+        <button class="role-card-btn therapist-btn">🩺 OT Login →</button>
+      </div>
+    </div>
+
+    <div class="landing-info">
+      <div class="info-card">
+        <div class="info-icon">📱</div>
+        <p><strong>QR Code Access</strong><br>Scan the QR code provided by your therapist to open this form directly</p>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">🔒</div>
+        <p><strong>Confidential</strong><br>Your responses are kept private and used only for clinical assessment purposes</p>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">🏠</div>
+        <p><strong>Home Programme</strong><br>Receive a personalised, evidence-based weekly home activity plan</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="landing-footer">
+    <p>SPECTRA v3.0 &nbsp;|&nbsp; Unit Terapi Cara Kerja, Hospital Tengku Permaisuri Norashikin Kajang (HTPN)</p>
+    <p class="footer-credit">© 2024 By Occupational Therapist HTPN Team &amp; Healthcare Intelligence Office HTPN. For clinical use only.</p>
+  </footer>
+</div>
+
+<script src="js/spectra.js"></script>
+</body>
+</html>

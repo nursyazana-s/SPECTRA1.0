@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SPECTRA — OT Dashboard</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .score-bar-mini{height:6px;background:var(--bg);border-radius:10px;overflow:hidden;margin:4px 0}
+    .score-bar-mini-fill{height:100%;border-radius:10px}
+    .edit-area{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:.87rem;font-family:var(--font);resize:vertical;outline:none;min-height:140px;transition:.2s;color:var(--text-dark)}
+    .edit-area:focus{border-color:var(--primary)}
+    .email-preview-box{background:#F8FAFF;border:1px solid #C7D2FE;border-radius:10px;padding:16px;font-size:.78rem;color:var(--text-mid);white-space:pre-wrap;font-family:'Courier New',monospace;max-height:260px;overflow-y:auto;margin-top:10px;line-height:1.6}
+    .action-btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+    .btn-email{background:linear-gradient(135deg,#0891B2,#0EA5E9);color:#fff;border:none;border-radius:12px;padding:10px 18px;font-size:.85rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .2s;font-family:var(--font)}
+    .btn-email:hover{box-shadow:0 4px 14px rgba(8,145,178,.3);transform:translateY(-1px)}
+    .btn-approve{background:linear-gradient(135deg,#059669,#10B981);color:#fff;border:none;border-radius:12px;padding:10px 18px;font-size:.85rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .2s;font-family:var(--font)}
+    .btn-approve:hover{box-shadow:0 4px 14px rgba(5,150,105,.3)}
+    .btn-edit-modal{background:linear-gradient(135deg,#7C3AED,#8B5CF6);color:#fff;border:none;border-radius:12px;padding:10px 18px;font-size:.85rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .2s;font-family:var(--font)}
+    .btn-edit-modal:hover{box-shadow:0 4px 14px rgba(124,58,237,.3)}
+  </style>
+</head>
+<body>
+<div class="sticky-banner">⚠️ Clinician review mandatory | HTPN &nbsp;|&nbsp; OT Portal — All results must be reviewed before sending to parents</div>
+
+<div id="disclaimerOverlay" class="disclaimer-overlay">
+  <div class="disclaimer-box">
+    <div class="disclaimer-logo-row"><div class="disclaimer-icon">🧠</div><div><h1 class="disclaimer-title">SPECTRA</h1><p class="disclaimer-subtitle">OT Dashboard</p></div></div>
+    <p class="disclaimer-credit">Occupational Therapist HTPN Team &amp; Healthcare Intelligence Office HTPN</p>
+    <div class="disclaimer-divider"></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">⚠ HITL</span><p>Review ALL AI-generated outputs before approving. Clinical responsibility is yours.</p></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">⚕ Clinical</span><p>Results sent to parents must be clinically validated by a registered OT.</p></div>
+    <div class="disclaimer-brand">Healthcare Intelligence Office HTPN</div>
+    <p class="disclaimer-ack">By clicking below you acknowledge these terms.</p>
+    <button class="disclaimer-btn" onclick="closeDisclaimer()">I Understand — Enter Clinical Document Checker</button>
+  </div>
+</div>
+
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">
+        <div class="ot-badge">OT</div>
+        <div class="sidebar-brand-name">SPECTRA</div>
+      </div>
+      <div class="sidebar-brand-sub">Occupational Therapist Portal</div>
+    </div>
+    <div class="sidebar-section-label">Navigation</div>
+    <div class="sidebar-nav-item active" onclick="showView('dashboard')" id="nav-dashboard"><span class="nav-icon">📊</span> Dashboard</div>
+    <div class="sidebar-nav-item" onclick="showView('patients')" id="nav-patients"><span class="nav-icon">👶</span> Patient Records</div>
+    <div class="sidebar-nav-item" onclick="showView('search')" id="nav-search"><span class="nav-icon">🔍</span> Search by IC</div>
+    <div class="sidebar-nav-item" onclick="showView('pending')" id="nav-pending"><span class="nav-icon">⏳</span> Pending Review</div>
+    <div id="adminSection" style="display:none">
+      <div class="sidebar-section-label">Admin</div>
+      <div class="sidebar-nav-item" onclick="showView('users')" id="nav-users"><span class="nav-icon">👥</span> User Management</div>
+    </div>
+    <div class="sidebar-section-label">Account</div>
+    <div class="sidebar-nav-item" onclick="doLogout()"><span class="nav-icon">🚪</span> Logout</div>
+    <div class="sidebar-user">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="ot-badge" style="width:38px;height:38px;font-size:.82rem">OT</div>
+        <div>
+          <div class="sidebar-user-name" id="sUserName">—</div>
+          <div class="sidebar-user-role" id="sUserRole">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="dashboard-main">
+
+    <!-- DASHBOARD -->
+    <div class="view-panel active" id="view-dashboard">
+      <div class="credit-banner">🏥 <span>By Occupational Therapist HTPN Team &amp; Healthcare Intelligence Office HTPN &nbsp;|&nbsp; Unit Terapi Cara Kerja, HTPN Kajang</span></div>
+      <h1 style="font-family:var(--font-display);font-size:1.45rem;margin-bottom:4px">Good day, <span id="welcomeName">OT</span> 👋</h1>
+      <p style="color:var(--text-light);font-size:.87rem;margin-bottom:24px">Unit Terapi Cara Kerja — HTPN Kajang</p>
+      <div class="stats-grid" id="statsGrid"></div>
+      <div class="table-wrapper"><div class="table-header"><div class="table-title">📋 Recent Submissions</div><button class="btn btn-secondary" onclick="showView('patients')" style="padding:8px 14px;font-size:.8rem">View All →</button></div><div id="recentTable"></div></div>
+    </div>
+
+    <!-- PATIENTS -->
+    <div class="view-panel" id="view-patients">
+      <h1 style="font-family:var(--font-display);font-size:1.35rem;margin-bottom:20px">👶 All Patient Records</h1>
+      <div class="table-wrapper">
+        <div class="table-header"><div class="table-title">Patient Submissions <span id="patCount" style="font-size:.8rem;color:var(--text-light);margin-left:8px"></span></div><input class="search-input" id="patSearch" placeholder="🔍 Search name / IC..." oninput="filterPats()"/></div>
+        <div id="patientsTable"></div>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="view-panel" id="view-search">
+      <h1 style="font-family:var(--font-display);font-size:1.35rem;margin-bottom:20px">🔍 Search Patient by IC</h1>
+      <div class="form-card" style="max-width:500px">
+        <div class="form-section-title">Search by Last 6 Digits of IC</div>
+        <p style="font-size:.84rem;color:var(--text-light);margin-bottom:16px">Enter the last 6 digits of the patient's IC number to retrieve their records.</p>
+        <div style="display:flex;gap:12px">
+          <input class="form-input" id="searchIC" type="text" maxlength="6" placeholder="e.g. 123456" style="flex:1" onkeydown="if(event.key==='Enter')searchByIC()"/>
+          <button class="btn btn-primary" onclick="searchByIC()">Search</button>
+        </div>
+      </div>
+      <div id="searchResults" style="margin-top:20px"></div>
+    </div>
+
+    <!-- PENDING -->
+    <div class="view-panel" id="view-pending">
+      <h1 style="font-family:var(--font-display);font-size:1.35rem;margin-bottom:20px">⏳ Pending OT Review</h1>
+      <div id="pendingTable"></div>
+    </div>
+
+    <!-- DETAIL -->
+    <div class="view-panel" id="view-detail">
+      <div class="action-btn-row">
+        <button class="btn btn-secondary" onclick="backFromDetail()" style="padding:8px 14px;font-size:.82rem">← Back</button>
+        <button class="btn-edit-modal" onclick="openEditModal()">✏️ Edit Notes & Programme</button>
+        <button class="btn-approve" onclick="approveResult()" id="approveBtn">✅ Approve Result</button>
+        <button class="btn-email" onclick="openEmailModal()" id="emailBtn">📧 Send to Parent</button>
+      </div>
+      <div id="detailContent"></div>
+    </div>
+
+    <!-- USERS -->
+    <div class="view-panel" id="view-users">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <h1 style="font-family:var(--font-display);font-size:1.35rem">👥 User Management</h1>
+        <button class="btn btn-primary" onclick="openAddUser()">+ Add User</button>
+      </div>
+      <div id="usersTable"></div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Edit Clinical Notes & Home Programme</div>
+    <div style="margin-bottom:16px">
+      <label class="form-label" style="display:block;margin-bottom:6px">Clinical Summary (Editable)</label>
+      <textarea class="edit-area" id="editSummary" rows="6" placeholder="Enter your clinical observations..."></textarea>
+    </div>
+    <div>
+      <label class="form-label" style="display:block;margin-bottom:6px">Home Programme Notes (Editable)</label>
+      <textarea class="edit-area" id="editProgramme" rows="8" placeholder="Enter home programme modifications for this patient..."></textarea>
+    </div>
+    <input type="hidden" id="editID"/>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEdit()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL MODAL - FIXED -->
+<div class="modal-overlay" id="emailModal">
+  <div class="modal-box" style="max-width:680px">
+    <div class="modal-title">📧 Send Results to Parent</div>
+    <div style="background:#FEF9C3;border:1px solid #FDE047;border-radius:10px;padding:12px 16px;font-size:.82rem;color:#713F12;margin-bottom:16px">
+      ⚠️ <strong>Important:</strong> You must <strong>Approve</strong> the result before sending. Ensure you have reviewed the clinical summary and home programme.
+    </div>
+    <div style="margin-bottom:12px">
+      <label class="form-label" style="display:block;margin-bottom:6px">Recipient Email</label>
+      <input class="form-input" id="emailRecipient" type="email" readonly style="background:var(--bg);color:var(--text-mid)"/>
+    </div>
+    <div style="margin-bottom:12px">
+      <label class="form-label" style="display:block;margin-bottom:6px">Email Subject</label>
+      <input class="form-input" id="emailSubject" type="text" readonly style="background:var(--bg);color:var(--text-mid)"/>
+    </div>
+    <div>
+      <label class="form-label" style="display:block;margin-bottom:6px">Email Preview (Content that will be sent)</label>
+      <div class="email-preview-box" id="emailPreviewBox"></div>
+    </div>
+    <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 16px;font-size:.8rem;color:#1E40AF;margin-top:14px">
+      💡 <strong>How it works:</strong> Clicking "Open Gmail / Email Client" will open your default email app with the full content pre-filled. You just need to click <strong>Send</strong> in your email client.
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeEmailModal()">Cancel</button>
+      <button class="btn-email" onclick="sendEmailNow()" style="border-radius:12px;padding:12px 24px;font-size:.9rem">
+        📧 Open Gmail / Email Client
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- USER MODAL -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal-box">
+    <div class="modal-title">👤 <span id="userModalTitle">Add New User</span></div>
+    <div class="form-grid">
+      <div class="form-group full-width"><label class="form-label">Full Name *</label><input class="form-input" id="mu-name" type="text"/></div>
+      <div class="form-group"><label class="form-label">Username *</label><input class="form-input" id="mu-user" type="text"/></div>
+      <div class="form-group"><label class="form-label">Password *</label><input class="form-input" id="mu-pass" type="password"/></div>
+      <div class="form-group full-width"><label class="form-label">Email</label><input class="form-input" id="mu-email" type="email"/></div>
+      <div class="form-group"><label class="form-label">Role *</label><select class="form-select" id="mu-role"><option value="therapist">Therapist</option><option value="admin">Admin</option></select></div>
+      <div class="form-group"><label class="form-label">Status</label><select class="form-select" id="mu-status"><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
+    </div>
+    <input type="hidden" id="mu-id"/>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeUserModal()">Cancel</button><button class="btn btn-primary" onclick="saveUser()">Save</button></div>
+  </div>
+</div>
+
+<div id="globalToast" class="toast"></div>
+<script src="../js/spectra.js"></script>
+<script>
+let auth=null,currentID=null,prevView='patients';
+const QNAMES={seeking:'Seeking/Seeker',avoiding:'Avoiding/Avoider',sensitivity:'Sensitivity/Sensor',registration:'Registration/Bystander'};
+const SNAMES={auditory:'Auditory',visual:'Visual',touch:'Touch',movement:'Movement',bodyPosition:'Body Position',oral:'Oral Sensory',conduct:'Conduct',socialEmotional:'Social Emotional',attentional:'Attentional'};
+const BCOLORS={'much-more':'#EF4444',more:'#F97316',typical:'#10B981',less:'#6366F1','much-less':'#9CA3AF'};
+
+window.addEventListener('load',()=>{
+  auth=requireAuth(); if(!auth) return;
+  document.getElementById('welcomeName').textContent=auth.name;
+  document.getElementById('sUserName').textContent=auth.name;
+  document.getElementById('sUserRole').textContent=auth.role.charAt(0).toUpperCase()+auth.role.slice(1);
+  if(auth.role==='admin') document.getElementById('adminSection').style.display='block';
+  renderDashboard();
+});
+
+function showView(v){
+  document.querySelectorAll('.view-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  const nav=document.getElementById('nav-'+v); if(nav) nav.classList.add('active');
+  if(v==='dashboard') renderDashboard();
+  if(v==='patients') renderPats();
+  if(v==='users') renderUsers();
+  if(v==='pending') renderPending();
+}
+function doLogout(){logout();}
+
+function renderDashboard(){
+  const subs=getSubmissions();
+  const pending=subs.filter(s=>!s.status||s.status==='pending').length;
+  const approved=subs.filter(s=>s.status==='approved').length;
+  const sent=subs.filter(s=>s.status==='sent').length;
+  document.getElementById('statsGrid').innerHTML=`
+    <div class="stat-card"><div class="stat-icon">👶</div><div class="stat-value">${subs.length}</div><div class="stat-label">Total Submissions</div></div>
+    <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value" style="color:#D97706">${pending}</div><div class="stat-label">Pending Review</div></div>
+    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" style="color:#059669">${approved}</div><div class="stat-label">Approved</div></div>
+    <div class="stat-card"><div class="stat-icon">📧</div><div class="stat-value" style="color:#2563EB">${sent}</div><div class="stat-label">Sent to Parents</div></div>`;
+  const recent=subs.slice(0,8);
+  if(!recent.length){document.getElementById('recentTable').innerHTML='<div class="empty-state"><div class="empty-state-icon">📭</div><p>No submissions yet</p></div>';return;}
+  document.getElementById('recentTable').innerHTML=`<table><thead><tr><th>Patient</th><th>IC (6)</th><th>Age</th><th>Date</th><th>Concern</th><th>Status</th><th>Action</th></tr></thead><tbody>${recent.map(buildRow).join('')}</tbody></table>`;
+}
+
+function buildRow(s){
+  const date=new Date(s.submittedAt).toLocaleDateString('en-MY');
+  let lvl='Typical Range',cls='score-typical';
+  if(s.report){
+    const all=[...Object.values(s.report.qReport||{}),...Object.values(s.report.sReport||{})];
+    if(all.some(v=>v.classification.key==='much-more')){lvl='⚠️ Much More';cls='score-much-more';}
+    else if(all.some(v=>v.classification.key==='more')){lvl='📊 More';cls='score-more';}
+  }
+  const sBadge=s.status==='approved'?'<span style="background:#DCFCE7;color:#166534;padding:3px 9px;border-radius:20px;font-size:.72rem;font-weight:700">✅ Approved</span>':s.status==='sent'?'<span style="background:#DBEAFE;color:#1E40AF;padding:3px 9px;border-radius:20px;font-size:.72rem;font-weight:700">📧 Sent</span>':'<span style="background:#FEF9C3;color:#854D0E;padding:3px 9px;border-radius:20px;font-size:.72rem;font-weight:700">⏳ Pending</span>';
+  return `<tr><td><strong>${s.childName}</strong></td><td><code style="font-size:.82rem">${s.ic6}</code></td><td>${s.childAge}y</td><td>${date}</td><td><span class="score-badge ${cls}">${lvl}</span></td><td>${sBadge}</td><td><button class="btn btn-secondary" style="padding:5px 12px;font-size:.76rem" onclick="viewDetail('${s.id}')">View →</button></td></tr>`;
+}
+
+function renderPats(f=''){
+  let subs=getSubmissions();
+  if(f){const fl=f.toLowerCase();subs=subs.filter(s=>s.childName.toLowerCase().includes(fl)||s.ic6.includes(fl));}
+  document.getElementById('patCount').textContent=`(${subs.length} records)`;
+  if(!subs.length){document.getElementById('patientsTable').innerHTML='<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No records found</p></div>';return;}
+  document.getElementById('patientsTable').innerHTML=`<table><thead><tr><th>Patient</th><th>IC (6)</th><th>Age</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody>${subs.map(buildRow).join('')}</tbody></table>`;
+}
+function filterPats(){renderPats(document.getElementById('patSearch').value);}
+
+function renderPending(){
+  const subs=getSubmissions().filter(s=>!s.status||s.status==='pending');
+  if(!subs.length){document.getElementById('pendingTable').innerHTML='<div class="form-card" style="text-align:center"><div style="font-size:3rem">✅</div><h3>All done!</h3><p style="color:var(--text-light)">No pending reviews.</p></div>';return;}
+  document.getElementById('pendingTable').innerHTML=`<div class="table-wrapper"><div class="table-header"><div class="table-title">⏳ Pending Review (${subs.length})</div></div><table><thead><tr><th>Patient</th><th>IC (6)</th><th>Date</th><th>Concern</th><th>Action</th></tr></thead><tbody>${subs.map(buildRow).join('')}</tbody></table></div>`;
+}
+
+function searchByIC(){
+  const ic=document.getElementById('searchIC').value.trim();
+  if(!/^\d{6}$/.test(ic)){showToast('Please enter exactly 6 digits','error');return;}
+  const res=findByIC(ic);
+  const cont=document.getElementById('searchResults');
+  if(!res.length){cont.innerHTML=`<div class="form-card" style="text-align:center"><div style="font-size:2.5rem">🔍</div><h3>No records found</h3><p style="color:var(--text-light)">No submissions found for IC: <strong>${ic}</strong></p></div>`;return;}
+  cont.innerHTML=`<h3 style="margin-bottom:12px;font-family:var(--font-display)">${res.length} record(s) found for IC: <code>${ic}</code></h3><div class="table-wrapper"><table><thead><tr><th>Name</th><th>Age</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody>${res.map(buildRow).join('')}</tbody></table></div>`;
+}
+
+function viewDetail(id){
+  const sub=findById(id); if(!sub) return;
+  currentID=id;
+  prevView=document.querySelector('.view-panel.active')?.id?.replace('view-','')||'patients';
+  const allScores=[
+    ...Object.entries(sub.report?.qReport||{}).map(([k,v])=>({key:k,...v,group:'Quadrant'})),
+    ...Object.entries(sub.report?.sReport||{}).map(([k,v])=>({key:k,...v,group:'Section'}))
+  ];
+  const sBadge=sub.status==='approved'?'<span style="background:#DCFCE7;color:#166534;padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:700">✅ Approved</span>':sub.status==='sent'?'<span style="background:#DBEAFE;color:#1E40AF;padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:700">📧 Sent to Parent</span>':'<span style="background:#FEF9C3;color:#854D0E;padding:3px 10px;border-radius:20px;font-size:.8rem;font-weight:700">⏳ Pending Review</span>';
+
+  document.getElementById('detailContent').innerHTML=`
+    <div class="patient-detail-header">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="font-size:.74rem;opacity:.65">Reference: ${sub.id} &nbsp;|&nbsp; ${sBadge}</div>
+          <h2 style="font-family:var(--font-display);font-size:1.7rem;margin:6px 0">${sub.childName}</h2>
+        </div>
+      </div>
+      <div class="patient-meta">
+        <div class="patient-meta-item"><div class="patient-meta-label">Age</div><div class="patient-meta-value">${sub.childAge} yrs</div></div>
+        <div class="patient-meta-item"><div class="patient-meta-label">Gender</div><div class="patient-meta-value">${sub.gender}</div></div>
+        <div class="patient-meta-item"><div class="patient-meta-label">IC (last 6)</div><div class="patient-meta-value"><code>${sub.ic6}</code></div></div>
+        <div class="patient-meta-item"><div class="patient-meta-label">Date Submitted</div><div class="patient-meta-value">${new Date(sub.submittedAt).toLocaleDateString('en-MY')}</div></div>
+        <div class="patient-meta-item"><div class="patient-meta-label">Phone</div><div class="patient-meta-value">${sub.phone}</div></div>
+        <div class="patient-meta-item"><div class="patient-meta-label">Parent Email</div><div class="patient-meta-value" style="font-size:.78rem;word-break:break-all">${sub.email}</div></div>
+      </div>
+    </div>
+
+    <div class="form-card" style="margin-bottom:20px">
+      <div class="form-section-title">📊 Original Score Summary (SP-2 Norms)</div>
+      <table>
+        <thead><tr><th>Domain</th><th>Group</th><th>Raw Score</th><th>Max</th><th>Classification</th><th>Bar</th></tr></thead>
+        <tbody>
+          ${allScores.map(s=>{
+            const pct=Math.round((s.score/s.max)*100);
+            const col=BCOLORS[s.classification.key]||'#9CA3AF';
+            return `<tr>
+              <td><strong>${SNAMES[s.key]||QNAMES[s.key]||s.key}</strong></td>
+              <td><span style="font-size:.7rem;background:var(--bg);padding:2px 8px;border-radius:6px">${s.group}</span></td>
+              <td style="font-weight:800;color:${col}">${s.score}</td>
+              <td style="color:var(--text-light)">/${s.max}</td>
+              <td><span class="score-badge score-${s.classification.key}">${s.classification.label}</span></td>
+              <td style="width:100px"><div class="score-bar-mini"><div class="score-bar-mini-fill" style="width:${pct}%;background:${col}"></div></div></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="clinical-summary-card" style="margin-bottom:20px">
+      <div class="clinical-summary-title">🩺 OT Clinical Summary</div>
+      <div class="clinical-summary-text" id="displaySummary">${sub.customSummary||sub.clinicalSummary||'—'}</div>
+      ${sub.editedBy?`<div style="font-size:.74rem;color:var(--text-light);margin-top:10px;border-top:1px solid var(--border);padding-top:8px">Last edited by: <strong>${sub.editedBy}</strong> on ${new Date(sub.editedAt).toLocaleDateString('en-MY')}</div>`:''}
+    </div>
+
+    ${sub.customProgramme?`<div class="form-card" style="margin-bottom:20px"><div class="form-section-title">📝 OT Programme Notes</div><div style="font-size:.87rem;line-height:1.75;color:var(--text-mid);white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:16px">${sub.customProgramme}</div></div>`:''}
+
+    <div class="form-card">
+      <div class="form-section-title">🏠 Evidence-Based Home Programme</div>
+      <p style="font-size:.78rem;color:var(--text-light);margin-bottom:16px">Generated from SP-2 scores. Review and approve before sending to parent.</p>
+      ${(sub.homeProgramme||[]).map(domain=>`
+        <div style="margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;background:${domain.bg};border-radius:10px;padding:12px 16px">
+            <span style="font-size:1.8rem">${domain.icon}</span>
+            <div>
+              <div style="font-weight:700;color:${domain.color};font-size:.95rem">${domain.domain}</div>
+              <div style="font-size:.72rem;color:var(--text-light);font-style:italic;margin-top:2px">Evidence: ${domain.evidence}</div>
+            </div>
+          </div>
+          ${domain.activities.map(act=>`
+            <div style="margin-bottom:12px;padding-left:20px">
+              <div style="font-weight:600;font-size:.87rem;margin-bottom:6px">📌 ${act.name}</div>
+              <ul style="list-style:disc;padding-left:16px;font-size:.81rem;color:var(--text-mid)">
+                ${act.steps.map(s=>`<li style="margin-bottom:3px;line-height:1.55">${s}</li>`).join('')}
+              </ul>
+            </div>`).join('')}
+        </div>`).join('')}
+    </div>`;
+
+  document.querySelectorAll('.view-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('view-detail').classList.add('active');
+}
+
+function backFromDetail(){showView(prevView);}
+
+function approveResult(){
+  if(!currentID) return;
+  updateSubmission(currentID,{status:'approved',approvedBy:auth.name,approvedAt:new Date().toISOString()});
+  showToast('✅ Result approved! Ready to send to parent.','success');
+  viewDetail(currentID);
+}
+
+// ── EMAIL MODAL (FIXED) ──
+function openEmailModal(){
+  const sub=findById(currentID); if(!sub) return;
+  if(sub.status!=='approved'){
+    showToast('⚠️ Please APPROVE the result first before sending to parent.','error');
+    return;
+  }
+  const emailBody=buildEmailBody(sub,auth);
+  const subject=`[SPECTRA] SP-2 Assessment Results — ${sub.childName}`;
+  document.getElementById('emailRecipient').value=sub.email;
+  document.getElementById('emailSubject').value=subject;
+  document.getElementById('emailPreviewBox').textContent=emailBody;
+  document.getElementById('emailModal').classList.add('open');
+}
+
+function sendEmailNow(){
+  const sub=findById(currentID); if(!sub) return;
+  const emailBody=buildEmailBody(sub,auth);
+  const subject=encodeURIComponent(`[SPECTRA] SP-2 Assessment Results — ${sub.childName}`);
+  const body=encodeURIComponent(emailBody);
+  const recipient=encodeURIComponent(sub.email);
+
+  // Open mailto with full content
+  const mailtoLink=`mailto:${recipient}?subject=${subject}&body=${body}`;
+  window.location.href=mailtoLink;
+
+  // Mark as sent
+  setTimeout(()=>{
+    updateSubmission(currentID,{status:'sent',sentBy:auth.name,sentAt:new Date().toISOString()});
+    closeEmailModal();
+    showToast('📧 Email client opened! Please click Send in your email app.','success');
+    viewDetail(currentID);
+  },500);
+}
+
+function closeEmailModal(){document.getElementById('emailModal').classList.remove('open');}
+
+function openEditModal(){
+  const sub=findById(currentID); if(!sub) return;
+  document.getElementById('editID').value=currentID;
+  document.getElementById('editSummary').value=(sub.customSummary||sub.clinicalSummary||'').replace(/<[^>]*>/g,'');
+  document.getElementById('editProgramme').value=sub.customProgramme||'';
+  document.getElementById('editModal').classList.add('open');
+}
+function closeEditModal(){document.getElementById('editModal').classList.remove('open');}
+function saveEdit(){
+  const id=document.getElementById('editID').value;
+  updateSubmission(id,{customSummary:document.getElementById('editSummary').value,customProgramme:document.getElementById('editProgramme').value,editedAt:new Date().toISOString(),editedBy:auth.name});
+  closeEditModal();showToast('✅ Changes saved!','success');viewDetail(id);
+}
+
+function renderUsers(){
+  const users=JSON.parse(localStorage.getItem('spectra_users')||'[]');
+  document.getElementById('usersTable').innerHTML=`
+    <div class="table-wrapper">
+      <div class="table-header"><div class="table-title">All Users (${users.length})</div></div>
+      <table><thead><tr><th>User</th><th>Username</th><th>Role</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>${users.map(u=>`<tr>
+        <td><div style="display:flex;align-items:center;gap:10px"><div class="user-avatar">${u.name.charAt(0)}</div><strong>${u.name}</strong></div></td>
+        <td><code>${u.username}</code></td>
+        <td><span style="font-size:.74rem;background:${u.role==='admin'?'#FEE2E2':'#EEF2FF'};color:${u.role==='admin'?'#991B1B':'#3730A3'};padding:3px 10px;border-radius:20px;font-weight:700">${u.role}</span></td>
+        <td style="font-size:.82rem">${u.email||'—'}</td>
+        <td><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:.73rem;font-weight:700;background:${u.status==='active'?'#DCFCE7':'#F1F5F9'};color:${u.status==='active'?'#166534':'#64748B'}">● ${u.status}</span></td>
+        <td><div style="display:flex;gap:8px">
+          <button class="btn btn-secondary" style="padding:5px 11px;font-size:.75rem" onclick="editUser(${u.id})">Edit</button>
+          ${u.id!==auth.id?`<button class="btn btn-danger" style="padding:5px 11px;font-size:.75rem" onclick="toggleUser(${u.id})">${u.status==='active'?'Deactivate':'Activate'}</button>`:''}
+        </div></td>
+      </tr>`).join('')}</tbody></table>
+    </div>`;
+}
+
+function openAddUser(){
+  document.getElementById('userModalTitle').textContent='Add New User';
+  document.getElementById('mu-id').value='';
+  ['mu-name','mu-user','mu-pass','mu-email'].forEach(f=>document.getElementById(f).value='');
+  document.getElementById('mu-role').value='therapist';
+  document.getElementById('mu-status').value='active';
+  document.getElementById('userModal').classList.add('open');
+}
+function editUser(id){
+  const users=JSON.parse(localStorage.getItem('spectra_users')||'[]');
+  const u=users.find(x=>x.id===id); if(!u) return;
+  document.getElementById('userModalTitle').textContent='Edit User';
+  document.getElementById('mu-id').value=u.id;
+  document.getElementById('mu-name').value=u.name;
+  document.getElementById('mu-user').value=u.username;
+  document.getElementById('mu-pass').value=u.password;
+  document.getElementById('mu-email').value=u.email||'';
+  document.getElementById('mu-role').value=u.role;
+  document.getElementById('mu-status').value=u.status;
+  document.getElementById('userModal').classList.add('open');
+}
+function closeUserModal(){document.getElementById('userModal').classList.remove('open');}
+function saveUser(){
+  const id=document.getElementById('mu-id').value;
+  const users=JSON.parse(localStorage.getItem('spectra_users')||'[]');
+  const data={name:document.getElementById('mu-name').value,username:document.getElementById('mu-user').value,password:document.getElementById('mu-pass').value,email:document.getElementById('mu-email').value,role:document.getElementById('mu-role').value,status:document.getElementById('mu-status').value};
+  if(id){const i=users.findIndex(u=>u.id==id);if(i>=0)users[i]={...users[i],...data};}
+  else{users.push({id:Date.now(),...data});}
+  localStorage.setItem('spectra_users',JSON.stringify(users));
+  closeUserModal();renderUsers();showToast('✅ User saved!','success');
+}
+function toggleUser(id){
+  const users=JSON.parse(localStorage.getItem('spectra_users')||'[]');
+  const i=users.findIndex(u=>u.id===id);
+  if(i>=0){users[i].status=users[i].status==='active'?'inactive':'active';localStorage.setItem('spectra_users',JSON.stringify(users));renderUsers();showToast('User updated','success');}
+}
+</script>
+</body>
+</html>

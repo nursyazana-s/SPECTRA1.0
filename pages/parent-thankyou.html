@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>SPECTRA — Submission Successful</title>
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .ty-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;padding-top:60px}
+    .ty-card{background:#fff;border-radius:24px;max-width:580px;width:100%;padding:52px 44px;text-align:center;box-shadow:var(--shadow-lg);border:1px solid var(--border)}
+    .ty-icon{font-size:5rem;display:block;margin-bottom:20px;animation:bounce .7s ease}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+    .ty-title{font-family:var(--font-display);font-size:1.8rem;font-weight:800;margin-bottom:10px;background:linear-gradient(135deg,#4F46E5,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .ty-desc{color:var(--text-light);font-size:.92rem;line-height:1.7;margin-bottom:24px}
+    .ty-steps{text-align:left;background:var(--bg);border-radius:14px;padding:22px;margin-bottom:24px}
+    .ty-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;font-size:.86rem;color:var(--text-mid)}
+    .ty-step:last-child{margin-bottom:0}
+    .ty-num{width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:1px}
+  </style>
+</head>
+<body>
+<div class="sticky-banner">⚠️ Clinician review mandatory | HTPN</div>
+<div id="disclaimerOverlay" class="disclaimer-overlay">
+  <div class="disclaimer-box">
+    <div class="disclaimer-logo-row"><div class="disclaimer-icon">🧠</div><div><h1 class="disclaimer-title">SPECTRA</h1><p class="disclaimer-subtitle">Sensory Profile Evaluation &amp; Therapy Assistant</p></div></div>
+    <p class="disclaimer-credit">Occupational Therapist HTPN Team &amp; Healthcare Intelligence Office HTPN</p>
+    <div class="disclaimer-divider"></div>
+    <div class="disclaimer-para"><span class="disclaimer-badge">⚕ Clinical</span><p>This tool does not constitute medical advice. Clinical responsibility remains with the treating clinician.</p></div>
+    <div class="disclaimer-brand">Healthcare Intelligence Office HTPN</div>
+    <p class="disclaimer-ack">By clicking below you acknowledge these terms.</p>
+    <button class="disclaimer-btn" onclick="closeDisclaimer()">I Understand — Enter Clinical Document Checker</button>
+  </div>
+</div>
+<div class="ty-wrap">
+  <div class="ty-card">
+    <span class="ty-icon">🎉</span>
+    <h1 class="ty-title">Submission Successful!</h1>
+    <p class="ty-desc">Thank you for completing the Child Sensory Profile 2 questionnaire. Your responses have been recorded and are awaiting review by your Occupational Therapist at HTPN Kajang.</p>
+    <div class="ty-steps">
+      <p style="font-weight:700;margin-bottom:14px;color:var(--text-dark)">📋 What happens next?</p>
+      <div class="ty-step"><div class="ty-num">1</div><div>Your OT will <strong>review the scores</strong> and clinical summary generated from your responses.</div></div>
+      <div class="ty-step"><div class="ty-num">2</div><div>The OT will <strong>edit and approve</strong> the home programme to ensure it is clinically appropriate.</div></div>
+      <div class="ty-step"><div class="ty-num">3</div><div>The <strong>approved results and home programme</strong> will be sent to your email after your clinic appointment.</div></div>
+      <div class="ty-step"><div class="ty-num">4</div><div>Please <strong>attend your scheduled appointment</strong> to discuss the results with your OT.</div></div>
+    </div>
+    <div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:12px;padding:16px;margin-bottom:24px;font-size:.84rem;color:#166534">
+      ✅ <strong>Submission recorded.</strong><br>
+      📋 Reference: <strong id="refID">—</strong><br>
+      📧 Results will be emailed to: <strong id="emailDisplay">—</strong>
+    </div>
+    <a href="../index.html" class="btn btn-primary" style="display:inline-flex;text-decoration:none">← Return to Home</a>
+  </div>
+</div>
+<script src="../js/spectra.js"></script>
+<script>
+const sub=JSON.parse(sessionStorage.getItem('spectra_latest')||'null');
+if(sub){document.getElementById('refID').textContent=sub.id;document.getElementById('emailDisplay').textContent=sub.email;}
+</script>
+</body>
+</html>
